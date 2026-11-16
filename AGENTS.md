@@ -7,24 +7,12 @@
 >
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
-
-## What Lovable manages
-
-Rules outside this block are the project's own. Change the pieces below in
-Lovable, not by hand. With the [Lovable MCP](https://mcp.lovable.dev)
-connected, `send_message` asks Lovable to do it; otherwise ask the user to
-use the editor.
-
-- **Database.** Do not add or edit `supabase/migrations/` or `drizzle/`.
-  Ask Lovable to change the schema.
-- **Generated files.** Do not edit a file whose header says it is automatically
-  generated.
-- **AI gateway.** Keep model calls on Lovable's gateway, and keep
-  `LOVABLE_API_KEY` out of browser code.
-- **Connectors.** Lovable provides native connectors. `list_connectors` shows
-  which are enabled; `add_connector` only returns the dashboard link. When a
-  connector is enabled, calls go through the connector gateway and need
-  `LOVABLE_API_KEY`. When Lovable does not provide one, users can bring their
-  own key and store it in Secrets.
-- **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Ship the MT5 connector as same-origin MQL5 source at `public/EA_VORTEX_Bridge.mq5`, matching the dashboard download and existing pipe-delimited bridge protocol.
+- Public pages (home, features, FAQ, how-it-works, scanner, get-app, auth, reset-password) share the client dashboard's theme: Chakra Petch / Manrope / JetBrains Mono, the `pw-*` classes and the CSS colour tokens in `src/styles.css`. Never introduce a separate homepage theme or hardcode surface colours; change the tokens instead.
+- The terminal connector journals execution intent before broker submission and retries reports, never uncertain orders, to avoid duplicate trades after interruptions.
+- Mobile web installation uses manifest-only metadata, without an app-shell service worker; Android APK downloads require a genuine compiled, signed artifact, not a renamed web file.
+- The Android APK is a minimal native WebView wrapper (no Capacitor) built from `/root/eavortex-android` (Gradle + AGP 8.5.2, SDK 34, package `co.eavortex.app`); the shipped artifact lives at `public/downloads/EA-VORTEX.apk` and its target URL is a single constant in `MainActivity.java` — rebuild with the published URL after launch.
+- Bot AI reuses the assistant route with an optional bot ID; fetch owner-scoped bot data server-side through an explicit safe-field allowlist, and keep chat read-only so it cannot bypass trading safeguards.
+- Fix portal sizing with fluid widths and shrinkable children, not disabled viewport zoom, to preserve mobile accessibility.

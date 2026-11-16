@@ -1,0 +1,176 @@
+// Pure helpers for the MT5 bridge protocol (shared by the server route, server functions and tests).
+import { isValidSetting } from "@/lib/strategy";
+/** Every strategy signal opens this many trades together (never fewer). */
+export const MIN_TRADES_PER_SIGNAL = 2;
+/** Highest value the "risk %" setting may take. It is also the drawdown at which the bot closes its own trades. */
+export const MAX_RISK_PCT = 50;
+
+/** How many trades a new signal may open right now: all MIN_TRADES_PER_SIGNAL, or none if they do not all fit. */
+export function signalTradeCount(openTrades: number, maxOpenTrades: number): number {
+  return maxOpenTrades - openTrades >= MIN_TRADES_PER_SIGNAL ? MIN_TRADES_PER_SIGNAL : 0;
+}
+
+/**
+ * Equity safety net: trades have no stop loss, so the bot closes its own trades when floating loss reaches
+ * `riskPct` of the balance (e.g. balance 1200 at 50% closes at -600).
+ */
+export function drawdownBreached(floatingPL: number, balance: number | null | undefined, riskPct: number): boolean {
+  if (!(typeof balance === "number" && balance > 0) || !(riskPct > 0) || !Number.isFinite(floatingPL)) return false;
+  return floatingPL <= -(balance * riskPct) / 100;
+}
+
+export type BotStatus = "running" | "paused" | "stopped";
+export type TradingMode = "demo" | "live";
+/** Account type exactly as MT5 reports ACCOUNT_TRADE_MODE. Anything else is unverified. */
+export type TerminalType = "demo" | "real" | "contest" | "unknown";
+
+export interface DeliveryInput {
+  status: BotStatus;
+  mode: TradingMode;
+  liveConfirmed: boolean;
+  terminalType: TerminalType;
+  terminalLogin: string;
+  accountLogin: string;
+  terminalServer?: string | undefined;
+  accountServer?: string | undefined;
+  openTrades: number;
+  maxOpenTrades: number;
+  dayPL?: number | null | undefined;
+  maxDailyLoss?: number | undefined;
+  /** Running profit target (0 = off) and the profit banked since the goal window opened. */
+  profitGoal?: number | undefined;
+  profitSinceGoal?: number | null | undefined;
+}
+
+const norm = (s: string | undefined) => (s ?? "").trim().toLowerCase();
+
+/** Returns null when orders may be sent to the terminal, otherwise the reason they are held. */
+export function holdReason(i: DeliveryInput): string | null {
+  if (i.terminalLogin.trim() !== i.accountLogin.trim()) return "LOGIN_MISMATCH";
+  if (i.accountServer !== undefined && norm(i.terminalServer) !== norm(i.accountServer)) return "SERVER_MISMATCH";
+  if (i.status !== "running") return i.status === "paused" ? "PAUSED" : "STOPPED";
+  if (i.terminalType !== "demo" && i.terminalType !== "real") return "ACCOUNT_TYPE_UNVERIFIED";
+  if (i.mode === "demo" && i.terminalType === "real") return "LIVE_ACCOUNT_IN_DEMO_MODE";
+  if (i.mode === "live" && i.terminalType === "demo") return "DEMO_ACCOUNT_IN_LIVE_MODE";
+  if (i.mode === "live" && !i.liveConfirmed) return "LIVE_NOT_CONFIRMED";
+  if (i.maxDailyLoss !== undefined) {
+    if (i.dayPL == null || !Number.isFinite(i.dayPL)) return "DAILY_PL_UNVERIFIED";
+    if (i.dayPL <= -i.maxDailyLoss) return "DAILY_LOSS_LIMIT";
+  }
+  if (i.profitGoal !== undefined && i.profitGoal > 0) {
+    if (i.profitSinceGoal == null || !Number.isFinite(i.profitSinceGoal)) return "PROFIT_GOAL_UNVERIFIED";
+    if (i.profitSinceGoal >= i.profitGoal) return "PROFIT_GOAL_REACHED";
+  }
+  if (i.openTrades >= i.maxOpenTrades) return "MAX_OPEN";
+  return null;
+}
+
+export const HOLD_TEXT: Record<string, string> = {
+  LOGIN_MISMATCH: "The MT5 terminal is logged into a different account than the one registered.",
+  SERVER_MISMATCH: "The MT5 terminal is on a different broker server than the one registered.",
+  PAUSED: "Bot is paused — no new orders.",
+  STOPPED: "Bot is stopped — no new orders.",
+  ACCOUNT_TYPE_UNVERIFIED: "MT5 did not report a demo or real account (e.g. contest). Orders are blocked.",
+  LIVE_ACCOUNT_IN_DEMO_MODE: "A LIVE account is connected but the bot is in demo mode. Orders are blocked.",
+  DEMO_ACCOUNT_IN_LIVE_MODE: "A DEMO account is connected but the bot is in live mode. Orders are blocked.",
+  LIVE_NOT_CONFIRMED: "Live trading has not been confirmed.",
+  DAILY_PL_UNVERIFIED: "The terminal did not report today's P/L, so the daily loss limit can't be checked.",
+  DAILY_LOSS_LIMIT: "Daily loss limit reached — no new orders today.",
+  PROFIT_GOAL_UNVERIFIED: "Profit so far toward your goal could not be verified, so no new orders are sent.",
+  PROFIT_GOAL_REACHED: "Profit goal reached — closing your trades and holding new orders.",
+  MAX_OPEN: "Maximum open positions reached.",
+  DRAWDOWN_LIMIT: "Floating loss reached your risk limit — closing the bot's trades.",
+};
+
+/** Sum of bot trade profits closed at or after the goal window opened. */
+export function closedProfitSince(
+  rows: { profit: number | null; closed_at: string | null }[],
+  sinceMs: number
+): number {
+  return rows.reduce((sum, r) => (r.closed_at && new Date(r.closed_at).getTime() >= sinceMs ? sum + Number(r.profit ?? 0) : sum), 0);
+}
+
+/** Floating P/L of the bot's own open positions (matched by ticket), so manual trades never count toward the goal. */
+export function floatingProfitOf(
+  positions: readonly { ticket?: string | null | undefined; profit: number }[],
+  botTickets: Set<string>
+): number {
+  return positions.reduce((sum, p) => (p.ticket && botTickets.has(p.ticket) ? sum + Number(p.profit ?? 0) : sum), 0);
+}
+
+export function terminalTypeOf(raw: unknown): TerminalType {
+  return raw === "demo" || raw === "real" || raw === "contest" ? raw : "unknown";
+}
+
+/** How many queued signals can be delivered right now. */
+export function deliverySlots(openTrades: number, maxOpenTrades: number): number {
+  return Math.max(0, maxOpenTrades - openTrades);
+}
+
+export function volumeAllowed(volume: number, maxLot: number): boolean {
+  return volume > 0 && volume <= maxLot;
+}
+
+export interface SignalLine {
+  id: string; symbol: string; side: "buy" | "sell"; volume: number;
+  stop_loss: number | null; take_profit: number | null;
+}
+
+/** One pipe-separated line per signal; MQL5 parses this with StringSplit. */
+export function formatSignalLine(s: SignalLine): string {
+  return ["SIG", s.id, s.symbol, s.side, s.volume, s.stop_loss ?? 0, s.take_profit ?? 0].join("|");
+}
+
+export interface BridgeConfig {
+  status: BotStatus; mode: TradingMode; liveConfirmed: boolean; maxLot: number; maxOpen: number;
+  riskPct: number; maxDailyLoss: number; strategy: string; hold: string | null;
+}
+/** First line of every bridge response: the terminal re-reads backend permissions each cycle. */
+export function formatConfigLine(c: BridgeConfig): string {
+  return ["CFG", c.status, c.mode, c.liveConfirmed ? 1 : 0, c.maxLot, c.maxOpen, c.riskPct, c.maxDailyLoss, c.strategy, c.hold ?? "NONE"].join("|");
+}
+
+export async function sha256Hex(value: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/** Terminal counts as online if it checked in within this window. */
+export const HEARTBEAT_ONLINE_MS = 90_000;
+
+export type ExecutionReport = "filled" | "rejected" | "closed";
+
+/** Retries acknowledge the same result without regressing a later terminal state. */
+export function reportTransition(current: string, result: ExecutionReport): "apply" | "ack" | "reject" {
+  if (current === result || (current === "closed" && result === "filled")) return "ack";
+  if (current === "sent" && (result === "filled" || result === "rejected")) return "apply";
+  if (current === "filled" && result === "closed") return "apply";
+  return "reject";
+}
+
+export interface StartInput {
+  hasToken: boolean; lastHeartbeat: string | null; now: number;
+  terminal: { login?: string; server?: string; type?: string; daypl?: number | null } | null;
+  accountLogin: string; accountServer: string; mode: TradingMode; liveConfirmed: boolean;
+  strategy: string; defaultLot: number; maxLot: number; maxOpen: number; riskPct: number; maxDailyLoss: number;
+}
+/** Every check START must pass. Empty array = may start. */
+export function startBlockers(i: StartInput): string[] {
+  const out: string[] = [];
+  if (!i.hasToken) out.push("Create a bridge token and pair your MT5 terminal first.");
+  if (!i.lastHeartbeat || i.now - new Date(i.lastHeartbeat).getTime() > HEARTBEAT_ONLINE_MS) out.push("MT5 bridge is not online (no heartbeat in the last 90 seconds).");
+  if (!i.terminal) return out.concat("Terminal has not reported its account yet.");
+  const r = holdReason({
+    status: "running", mode: i.mode, liveConfirmed: i.liveConfirmed, terminalType: terminalTypeOf(i.terminal.type),
+    terminalLogin: String(i.terminal.login ?? ""), accountLogin: i.accountLogin,
+    terminalServer: i.terminal.server, accountServer: i.accountServer,
+    openTrades: 0, maxOpenTrades: Math.max(MIN_TRADES_PER_SIGNAL, i.maxOpen), dayPL: i.terminal.daypl ?? null, maxDailyLoss: i.maxDailyLoss,
+  });
+  if (r) out.push(HOLD_TEXT[r] ?? r);
+  if (!isValidSetting(i.strategy)) out.push("Selected strategy is not implemented.");
+  if (!(i.defaultLot > 0) || !(i.maxLot > 0) || i.defaultLot > i.maxLot) out.push("Lot sizes are invalid (default must be > 0 and ≤ max lot).");
+  if (!(i.maxOpen >= MIN_TRADES_PER_SIGNAL)) out.push(`Max open positions must be at least ${MIN_TRADES_PER_SIGNAL}, because every signal opens ${MIN_TRADES_PER_SIGNAL} trades.`);
+  if (!(i.riskPct > 0 && i.riskPct <= MAX_RISK_PCT)) out.push(`Risk per trade must be between 0 and ${MAX_RISK_PCT}%.`);
+  if (!(i.maxDailyLoss > 0)) out.push("Max daily loss must be greater than 0.");
+  return out;
+}
