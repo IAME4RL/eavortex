@@ -1,0 +1,40 @@
+# EA VORTEX — Resume & Complete
+
+## Current client portal update
+- [x] Correct phone layout sizing without disabling accessibility zoom
+- [x] Connect the bot controls to the existing AI assistant with private, read-only bot context
+- [x] Show successful START confirmation without masking start blockers
+- [x] Verify 320/390/1280px layouts, authenticated assistant reply, and 37 relevant tests; build OK
+- [ ] Verify successful START and bot-specific chat in the live client flow — the requesting account has no configured bot or MT5 account; do not create or start real trading for testing
+
+## Current homepage update
+- [x] Restyle the public homepage using the November 1 EA NEXUS references, retain EA VORTEX branding and existing destinations, and verify desktop/mobile navigation
+
+## Separate mentor and client portals
+- [x] Inspect current authentication, routes, database, strategy registry, client controls, and MT5 Bridge
+- [ ] Add separately guarded mentor login/dashboard and mentor navigation
+- [ ] Add mentor-owned robot configurations, client assignments, invitation codes, and secure license lifecycle
+- [ ] Add client license activation, authorized robot selection, and execution entitlement checks to existing START and bridge polling
+- [ ] Apply reference-inspired portal styling while preserving scanner and existing platform
+- [ ] Verify ownership isolation, activation limits/expiry/revocation, client START/STOP, existing tests, and Android/desktop layouts
+- [ ] Exact visual comparison against original trading video and EA NEXUS screenshot — original media must be reuploaded
+
+## Market Signals (rule-based scanner)
+- [x] Real market-data layer (Yahoo Finance chart API, GOLD via GC=F futures), 15-strategy engine, HTF confirmation, expiry, dedupe, signals table + RLS
+- [x] Market Signals dashboard page with signal card, history, and walk-forward backtesting (verified in browser: NO TRADE honesty + backtest metrics)
+- [x] AI Chart Scanner results page links to Market Signals with the scanned instrument/timeframe and auto-generates a signal on arrival (?instrument=…&timeframe=…&auto=true)
+- [ ] Wire scanner signals into Auto Trade bot queue (Auto-Trade AI Signals toggle) — deferred by user until credits allow
+
+## Get the app
+- [x] ACTIVATE BOT links to /get-app with iOS Add-to-Home-Screen steps and Android APK download; home-screen icons (192/512/maskable/180) in manifest + head.
+- [x] APK v1.0.1 rebuilt against the published URL (https://eavortexza.lovable.app) — opens the live site directly, no Lovable preview redirect. Project recreated at /root/eavortex-android.
+- [ ] Sign a release build with a proper release keystore before public distribution (current build is debug-signed).
+
+## MT5 Bridge download
+- [x] MT5 bridge EA + dashboard controls (start/stop, live mode, emergency close, strategies)
+- [ ] Verify the download and bridge protocol tests; MT5 compilation and demo execution require a Windows MT5 terminal.
+
+## Product tiers (planned with user)
+- [ ] In-app push notifications + 1-tap quick-copy trade cards for signal-only clients (any broker, phone only)
+- [ ] MetaAPI cloud gateway tier: paying clients connect any-broker MT5 accounts for true Auto Trade without a PC
+- [ ] Verify build + main journeys

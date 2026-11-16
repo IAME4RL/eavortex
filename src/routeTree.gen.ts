@@ -10,33 +10,354 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as FeaturesRouteImport } from './routes/features'
+import { Route as GetAppRouteImport } from './routes/get-app'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ScannerRouteImport } from './routes/scanner'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardAdminRouteImport } from './routes/_authenticated/dashboard.admin'
+import { Route as AuthenticatedDashboardAiRouteImport } from './routes/_authenticated/dashboard.ai'
+import { Route as AuthenticatedDashboardAnalyticsRouteImport } from './routes/_authenticated/dashboard.analytics'
+import { Route as AuthenticatedDashboardAutoTradeRouteImport } from './routes/_authenticated/dashboard.auto-trade'
+import { Route as AuthenticatedDashboardEaRouteImport } from './routes/_authenticated/dashboard.ea'
+import { Route as AuthenticatedDashboardHistoryRouteImport } from './routes/_authenticated/dashboard.history'
+import { Route as AuthenticatedDashboardMarketRouteImport } from './routes/_authenticated/dashboard.market'
+import { Route as AuthenticatedDashboardMentorRouteImport } from './routes/_authenticated/dashboard.mentor'
+import { Route as AuthenticatedDashboardNewsRouteImport } from './routes/_authenticated/dashboard.news'
+import { Route as AuthenticatedDashboardNotificationsRouteImport } from './routes/_authenticated/dashboard.notifications'
+import { Route as AuthenticatedDashboardScannerRouteImport } from './routes/_authenticated/dashboard.scanner'
+import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_authenticated/dashboard.settings'
+import { Route as AuthenticatedDashboardScanIdRouteImport } from './routes/_authenticated/dashboard.scan.$id'
+import { Route as ApiPublicBridgeMt5RouteImport } from './routes/api/public/bridge.mt5'
+import { Route as ApiPublicCronCloudTradeRouteImport } from './routes/api/public/cron.cloud-trade'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeaturesRoute = FeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetAppRoute = GetAppRouteImport.update({
+  id: '/get-app',
+  path: '/get-app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScannerRoute = ScannerRouteImport.update({
+  id: '/scanner',
+  path: '/scanner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAdminRoute =
+  AuthenticatedDashboardAdminRouteImport.update({
+    id: '/admin',
+    path: '/admin',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAiRoute =
+  AuthenticatedDashboardAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAnalyticsRoute =
+  AuthenticatedDashboardAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAutoTradeRoute =
+  AuthenticatedDashboardAutoTradeRouteImport.update({
+    id: '/auto-trade',
+    path: '/auto-trade',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardEaRoute =
+  AuthenticatedDashboardEaRouteImport.update({
+    id: '/ea',
+    path: '/ea',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardHistoryRoute =
+  AuthenticatedDashboardHistoryRouteImport.update({
+    id: '/history',
+    path: '/history',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardMarketRoute =
+  AuthenticatedDashboardMarketRouteImport.update({
+    id: '/market',
+    path: '/market',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardMentorRoute =
+  AuthenticatedDashboardMentorRouteImport.update({
+    id: '/mentor',
+    path: '/mentor',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardNewsRoute =
+  AuthenticatedDashboardNewsRouteImport.update({
+    id: '/news',
+    path: '/news',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardNotificationsRoute =
+  AuthenticatedDashboardNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardScannerRoute =
+  AuthenticatedDashboardScannerRouteImport.update({
+    id: '/scanner',
+    path: '/scanner',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSettingsRoute =
+  AuthenticatedDashboardSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardScanIdRoute =
+  AuthenticatedDashboardScanIdRouteImport.update({
+    id: '/scan/$id',
+    path: '/scan/$id',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const ApiPublicBridgeMt5Route = ApiPublicBridgeMt5RouteImport.update({
+  id: '/api/public/bridge/mt5',
+  path: '/api/public/bridge/mt5',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicCronCloudTradeRoute = ApiPublicCronCloudTradeRouteImport.update({
+  id: '/api/public/cron/cloud-trade',
+  path: '/api/public/cron/cloud-trade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/faq': typeof FaqRoute
+  '/features': typeof FeaturesRoute
+  '/get-app': typeof GetAppRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/scanner': typeof ScannerRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/dashboard/admin': typeof AuthenticatedDashboardAdminRoute
+  '/dashboard/ai': typeof AuthenticatedDashboardAiRoute
+  '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
+  '/dashboard/auto-trade': typeof AuthenticatedDashboardAutoTradeRoute
+  '/dashboard/ea': typeof AuthenticatedDashboardEaRoute
+  '/dashboard/history': typeof AuthenticatedDashboardHistoryRoute
+  '/dashboard/market': typeof AuthenticatedDashboardMarketRoute
+  '/dashboard/mentor': typeof AuthenticatedDashboardMentorRoute
+  '/dashboard/news': typeof AuthenticatedDashboardNewsRoute
+  '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
+  '/dashboard/scanner': typeof AuthenticatedDashboardScannerRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/scan/$id': typeof AuthenticatedDashboardScanIdRoute
+  '/api/public/bridge/mt5': typeof ApiPublicBridgeMt5Route
+  '/api/public/cron/cloud-trade': typeof ApiPublicCronCloudTradeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/faq': typeof FaqRoute
+  '/features': typeof FeaturesRoute
+  '/get-app': typeof GetAppRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/scanner': typeof ScannerRoute
+  '/dashboard/admin': typeof AuthenticatedDashboardAdminRoute
+  '/dashboard/ai': typeof AuthenticatedDashboardAiRoute
+  '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
+  '/dashboard/auto-trade': typeof AuthenticatedDashboardAutoTradeRoute
+  '/dashboard/ea': typeof AuthenticatedDashboardEaRoute
+  '/dashboard/history': typeof AuthenticatedDashboardHistoryRoute
+  '/dashboard/market': typeof AuthenticatedDashboardMarketRoute
+  '/dashboard/mentor': typeof AuthenticatedDashboardMentorRoute
+  '/dashboard/news': typeof AuthenticatedDashboardNewsRoute
+  '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
+  '/dashboard/scanner': typeof AuthenticatedDashboardScannerRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/scan/$id': typeof AuthenticatedDashboardScanIdRoute
+  '/api/public/bridge/mt5': typeof ApiPublicBridgeMt5Route
+  '/api/public/cron/cloud-trade': typeof ApiPublicCronCloudTradeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/faq': typeof FaqRoute
+  '/features': typeof FeaturesRoute
+  '/get-app': typeof GetAppRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/scanner': typeof ScannerRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/dashboard/admin': typeof AuthenticatedDashboardAdminRoute
+  '/_authenticated/dashboard/ai': typeof AuthenticatedDashboardAiRoute
+  '/_authenticated/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
+  '/_authenticated/dashboard/auto-trade': typeof AuthenticatedDashboardAutoTradeRoute
+  '/_authenticated/dashboard/ea': typeof AuthenticatedDashboardEaRoute
+  '/_authenticated/dashboard/history': typeof AuthenticatedDashboardHistoryRoute
+  '/_authenticated/dashboard/market': typeof AuthenticatedDashboardMarketRoute
+  '/_authenticated/dashboard/mentor': typeof AuthenticatedDashboardMentorRoute
+  '/_authenticated/dashboard/news': typeof AuthenticatedDashboardNewsRoute
+  '/_authenticated/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
+  '/_authenticated/dashboard/scanner': typeof AuthenticatedDashboardScannerRoute
+  '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/dashboard/scan/$id': typeof AuthenticatedDashboardScanIdRoute
+  '/api/public/bridge/mt5': typeof ApiPublicBridgeMt5Route
+  '/api/public/cron/cloud-trade': typeof ApiPublicCronCloudTradeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/faq'
+    | '/features'
+    | '/get-app'
+    | '/how-it-works'
+    | '/reset-password'
+    | '/scanner'
+    | '/dashboard'
+    | '/dashboard/admin'
+    | '/dashboard/ai'
+    | '/dashboard/analytics'
+    | '/dashboard/auto-trade'
+    | '/dashboard/ea'
+    | '/dashboard/history'
+    | '/dashboard/market'
+    | '/dashboard/mentor'
+    | '/dashboard/news'
+    | '/dashboard/notifications'
+    | '/dashboard/scanner'
+    | '/dashboard/settings'
+    | '/dashboard/'
+    | '/dashboard/scan/$id'
+    | '/api/public/bridge/mt5'
+    | '/api/public/cron/cloud-trade'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/faq'
+    | '/features'
+    | '/get-app'
+    | '/how-it-works'
+    | '/reset-password'
+    | '/scanner'
+    | '/dashboard/admin'
+    | '/dashboard/ai'
+    | '/dashboard/analytics'
+    | '/dashboard/auto-trade'
+    | '/dashboard/ea'
+    | '/dashboard/history'
+    | '/dashboard/market'
+    | '/dashboard/mentor'
+    | '/dashboard/news'
+    | '/dashboard/notifications'
+    | '/dashboard/scanner'
+    | '/dashboard/settings'
+    | '/dashboard'
+    | '/dashboard/scan/$id'
+    | '/api/public/bridge/mt5'
+    | '/api/public/cron/cloud-trade'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/faq'
+    | '/features'
+    | '/get-app'
+    | '/how-it-works'
+    | '/reset-password'
+    | '/scanner'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/dashboard/admin'
+    | '/_authenticated/dashboard/ai'
+    | '/_authenticated/dashboard/analytics'
+    | '/_authenticated/dashboard/auto-trade'
+    | '/_authenticated/dashboard/ea'
+    | '/_authenticated/dashboard/history'
+    | '/_authenticated/dashboard/market'
+    | '/_authenticated/dashboard/mentor'
+    | '/_authenticated/dashboard/news'
+    | '/_authenticated/dashboard/notifications'
+    | '/_authenticated/dashboard/scanner'
+    | '/_authenticated/dashboard/settings'
+    | '/_authenticated/dashboard/'
+    | '/_authenticated/dashboard/scan/$id'
+    | '/api/public/bridge/mt5'
+    | '/api/public/cron/cloud-trade'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  FaqRoute: typeof FaqRoute
+  FeaturesRoute: typeof FeaturesRoute
+  GetAppRoute: typeof GetAppRoute
+  HowItWorksRoute: typeof HowItWorksRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  ScannerRoute: typeof ScannerRoute
+  ApiPublicBridgeMt5Route: typeof ApiPublicBridgeMt5Route
+  ApiPublicCronCloudTradeRoute: typeof ApiPublicCronCloudTradeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +369,248 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/features': {
+      id: '/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof FeaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-app': {
+      id: '/get-app'
+      path: '/get-app'
+      fullPath: '/get-app'
+      preLoaderRoute: typeof GetAppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scanner': {
+      id: '/scanner'
+      path: '/scanner'
+      fullPath: '/scanner'
+      preLoaderRoute: typeof ScannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/admin': {
+      id: '/_authenticated/dashboard/admin'
+      path: '/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/ai': {
+      id: '/_authenticated/dashboard/ai'
+      path: '/ai'
+      fullPath: '/dashboard/ai'
+      preLoaderRoute: typeof AuthenticatedDashboardAiRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/analytics': {
+      id: '/_authenticated/dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof AuthenticatedDashboardAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/auto-trade': {
+      id: '/_authenticated/dashboard/auto-trade'
+      path: '/auto-trade'
+      fullPath: '/dashboard/auto-trade'
+      preLoaderRoute: typeof AuthenticatedDashboardAutoTradeRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/ea': {
+      id: '/_authenticated/dashboard/ea'
+      path: '/ea'
+      fullPath: '/dashboard/ea'
+      preLoaderRoute: typeof AuthenticatedDashboardEaRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/history': {
+      id: '/_authenticated/dashboard/history'
+      path: '/history'
+      fullPath: '/dashboard/history'
+      preLoaderRoute: typeof AuthenticatedDashboardHistoryRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/market': {
+      id: '/_authenticated/dashboard/market'
+      path: '/market'
+      fullPath: '/dashboard/market'
+      preLoaderRoute: typeof AuthenticatedDashboardMarketRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/mentor': {
+      id: '/_authenticated/dashboard/mentor'
+      path: '/mentor'
+      fullPath: '/dashboard/mentor'
+      preLoaderRoute: typeof AuthenticatedDashboardMentorRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/news': {
+      id: '/_authenticated/dashboard/news'
+      path: '/news'
+      fullPath: '/dashboard/news'
+      preLoaderRoute: typeof AuthenticatedDashboardNewsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/notifications': {
+      id: '/_authenticated/dashboard/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/notifications'
+      preLoaderRoute: typeof AuthenticatedDashboardNotificationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/scanner': {
+      id: '/_authenticated/dashboard/scanner'
+      path: '/scanner'
+      fullPath: '/dashboard/scanner'
+      preLoaderRoute: typeof AuthenticatedDashboardScannerRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/settings': {
+      id: '/_authenticated/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof AuthenticatedDashboardSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/scan/$id': {
+      id: '/_authenticated/dashboard/scan/$id'
+      path: '/scan/$id'
+      fullPath: '/dashboard/scan/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardScanIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/api/public/bridge/mt5': {
+      id: '/api/public/bridge/mt5'
+      path: '/api/public/bridge/mt5'
+      fullPath: '/api/public/bridge/mt5'
+      preLoaderRoute: typeof ApiPublicBridgeMt5RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/cron/cloud-trade': {
+      id: '/api/public/cron/cloud-trade'
+      path: '/api/public/cron/cloud-trade'
+      fullPath: '/api/public/cron/cloud-trade'
+      preLoaderRoute: typeof ApiPublicCronCloudTradeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardAdminRoute: typeof AuthenticatedDashboardAdminRoute
+  AuthenticatedDashboardAiRoute: typeof AuthenticatedDashboardAiRoute
+  AuthenticatedDashboardAnalyticsRoute: typeof AuthenticatedDashboardAnalyticsRoute
+  AuthenticatedDashboardAutoTradeRoute: typeof AuthenticatedDashboardAutoTradeRoute
+  AuthenticatedDashboardEaRoute: typeof AuthenticatedDashboardEaRoute
+  AuthenticatedDashboardHistoryRoute: typeof AuthenticatedDashboardHistoryRoute
+  AuthenticatedDashboardMarketRoute: typeof AuthenticatedDashboardMarketRoute
+  AuthenticatedDashboardMentorRoute: typeof AuthenticatedDashboardMentorRoute
+  AuthenticatedDashboardNewsRoute: typeof AuthenticatedDashboardNewsRoute
+  AuthenticatedDashboardNotificationsRoute: typeof AuthenticatedDashboardNotificationsRoute
+  AuthenticatedDashboardScannerRoute: typeof AuthenticatedDashboardScannerRoute
+  AuthenticatedDashboardSettingsRoute: typeof AuthenticatedDashboardSettingsRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDashboardScanIdRoute: typeof AuthenticatedDashboardScanIdRoute
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardAdminRoute: AuthenticatedDashboardAdminRoute,
+    AuthenticatedDashboardAiRoute: AuthenticatedDashboardAiRoute,
+    AuthenticatedDashboardAnalyticsRoute: AuthenticatedDashboardAnalyticsRoute,
+    AuthenticatedDashboardAutoTradeRoute: AuthenticatedDashboardAutoTradeRoute,
+    AuthenticatedDashboardEaRoute: AuthenticatedDashboardEaRoute,
+    AuthenticatedDashboardHistoryRoute: AuthenticatedDashboardHistoryRoute,
+    AuthenticatedDashboardMarketRoute: AuthenticatedDashboardMarketRoute,
+    AuthenticatedDashboardMentorRoute: AuthenticatedDashboardMentorRoute,
+    AuthenticatedDashboardNewsRoute: AuthenticatedDashboardNewsRoute,
+    AuthenticatedDashboardNotificationsRoute:
+      AuthenticatedDashboardNotificationsRoute,
+    AuthenticatedDashboardScannerRoute: AuthenticatedDashboardScannerRoute,
+    AuthenticatedDashboardSettingsRoute: AuthenticatedDashboardSettingsRoute,
+    AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+    AuthenticatedDashboardScanIdRoute: AuthenticatedDashboardScanIdRoute,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  FaqRoute: FaqRoute,
+  FeaturesRoute: FeaturesRoute,
+  GetAppRoute: GetAppRoute,
+  HowItWorksRoute: HowItWorksRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  ScannerRoute: ScannerRoute,
+  ApiPublicBridgeMt5Route: ApiPublicBridgeMt5Route,
+  ApiPublicCronCloudTradeRoute: ApiPublicCronCloudTradeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
