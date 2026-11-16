@@ -14,16 +14,655 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      app_settings: {
+        Row: {
+          daily_scan_limit: number
+          id: number
+          scanner_enabled: boolean
+          updated_at: string
+        }
+        Insert: {
+          daily_scan_limit?: number
+          id?: number
+          scanner_enabled?: boolean
+          updated_at?: string
+        }
+        Update: {
+          daily_scan_limit?: number
+          id?: number
+          scanner_enabled?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      backtest_runs: {
+        Row: {
+          bar_count: number
+          created_at: string
+          first_bar: string | null
+          id: string
+          last_bar: string | null
+          metrics: Json
+          strategy: string
+          symbol: string
+          timeframe: string
+          user_id: string
+        }
+        Insert: {
+          bar_count?: number
+          created_at?: string
+          first_bar?: string | null
+          id?: string
+          last_bar?: string | null
+          metrics?: Json
+          strategy: string
+          symbol: string
+          timeframe: string
+          user_id: string
+        }
+        Update: {
+          bar_count?: number
+          created_at?: string
+          first_bar?: string | null
+          id?: string
+          last_bar?: string | null
+          metrics?: Json
+          strategy?: string
+          symbol?: string
+          timeframe?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bots: {
+        Row: {
+          account_id: string
+          bridge_token_hash: string | null
+          created_at: string
+          default_lot: number
+          demo_only: boolean
+          emergency_close_ack_at: string | null
+          emergency_close_requested_at: string | null
+          emergency_close_result: string | null
+          goal_close_ack_at: string | null
+          goal_close_requested_at: string | null
+          goal_profit: number
+          goal_reached_at: string | null
+          goal_started_at: string | null
+          id: string
+          last_decision: string | null
+          last_error: string | null
+          last_heartbeat: string | null
+          live_confirmed_at: string | null
+          max_daily_loss: number
+          max_lot: number
+          max_open_trades: number
+          profit_goal: number
+          profit_goal_mode: string
+          risk_per_trade_pct: number
+          status: string
+          stop_ack_at: string | null
+          stop_requested_at: string | null
+          strategy: string
+          terminal_info: Json | null
+          trading_mode: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_id: string
+          bridge_token_hash?: string | null
+          created_at?: string
+          default_lot?: number
+          demo_only?: boolean
+          emergency_close_ack_at?: string | null
+          emergency_close_requested_at?: string | null
+          emergency_close_result?: string | null
+          goal_close_ack_at?: string | null
+          goal_close_requested_at?: string | null
+          goal_profit?: number
+          goal_reached_at?: string | null
+          goal_started_at?: string | null
+          id?: string
+          last_decision?: string | null
+          last_error?: string | null
+          last_heartbeat?: string | null
+          live_confirmed_at?: string | null
+          max_daily_loss?: number
+          max_lot?: number
+          max_open_trades?: number
+          profit_goal?: number
+          profit_goal_mode?: string
+          risk_per_trade_pct?: number
+          status?: string
+          stop_ack_at?: string | null
+          stop_requested_at?: string | null
+          strategy?: string
+          terminal_info?: Json | null
+          trading_mode?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_id?: string
+          bridge_token_hash?: string | null
+          created_at?: string
+          default_lot?: number
+          demo_only?: boolean
+          emergency_close_ack_at?: string | null
+          emergency_close_requested_at?: string | null
+          emergency_close_result?: string | null
+          goal_close_ack_at?: string | null
+          goal_close_requested_at?: string | null
+          goal_profit?: number
+          goal_reached_at?: string | null
+          goal_started_at?: string | null
+          id?: string
+          last_decision?: string | null
+          last_error?: string | null
+          last_heartbeat?: string | null
+          live_confirmed_at?: string | null
+          max_daily_loss?: number
+          max_lot?: number
+          max_open_trades?: number
+          profit_goal?: number
+          profit_goal_mode?: string
+          risk_per_trade_pct?: number
+          status?: string
+          stop_ack_at?: string | null
+          stop_requested_at?: string | null
+          strategy?: string
+          terminal_info?: Json | null
+          trading_mode?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bots_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "trading_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cloud_api_keys: {
+        Row: {
+          api_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          api_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          api_key?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mentor_assignments: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          mentor_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          mentor_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          mentor_id?: string
+        }
+        Relationships: []
+      }
+      mentor_bot_licenses: {
+        Row: {
+          bot_id: string
+          client_email: string
+          client_id: string | null
+          client_name: string
+          created_at: string
+          id: string
+          license_hash: string
+          license_key: string
+          mentor_id: string
+          redeemed_at: string | null
+          status: string
+        }
+        Insert: {
+          bot_id: string
+          client_email: string
+          client_id?: string | null
+          client_name: string
+          created_at?: string
+          id?: string
+          license_hash: string
+          license_key: string
+          mentor_id: string
+          redeemed_at?: string | null
+          status?: string
+        }
+        Update: {
+          bot_id?: string
+          client_email?: string
+          client_id?: string | null
+          client_name?: string
+          created_at?: string
+          id?: string
+          license_hash?: string
+          license_key?: string
+          mentor_id?: string
+          redeemed_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_bot_licenses_bot_id_fkey"
+            columns: ["bot_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_bots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_bots: {
+        Row: {
+          avatar_url: string | null
+          background_url: string | null
+          created_at: string
+          description: string
+          id: string
+          mentor_id: string
+          mentor_name: string
+          name: string
+          strategies: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          background_url?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          mentor_id: string
+          mentor_name?: string
+          name: string
+          strategies?: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          background_url?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          mentor_id?: string
+          mentor_name?: string
+          name?: string
+          strategies?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          read: boolean
+          sender_id: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read?: boolean
+          sender_id?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read?: boolean
+          sender_id?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          mentor_requested: boolean
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          mentor_requested?: boolean
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          mentor_requested?: boolean
+        }
+        Relationships: []
+      }
+      scans: {
+        Row: {
+          analysis: Json | null
+          created_at: string
+          error: string | null
+          id: string
+          image_path: string | null
+          instrument: string
+          saved: boolean
+          status: string
+          timeframe: string
+          trading_style: string
+          user_id: string
+        }
+        Insert: {
+          analysis?: Json | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          image_path?: string | null
+          instrument: string
+          saved?: boolean
+          status?: string
+          timeframe: string
+          trading_style: string
+          user_id: string
+        }
+        Update: {
+          analysis?: Json | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          image_path?: string | null
+          instrument?: string
+          saved?: boolean
+          status?: string
+          timeframe?: string
+          trading_style?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      signals: {
+        Row: {
+          created_at: string
+          data_at: string
+          entry: number
+          expires_at: string
+          explanation: string
+          id: string
+          reason: string
+          risk_reward: number
+          side: string
+          signal_key: string
+          status: string
+          stop_loss: number
+          strategy: string
+          symbol: string
+          take_profit: number
+          timeframe: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_at: string
+          entry: number
+          expires_at: string
+          explanation: string
+          id?: string
+          reason: string
+          risk_reward: number
+          side: string
+          signal_key: string
+          status?: string
+          stop_loss: number
+          strategy: string
+          symbol: string
+          take_profit: number
+          timeframe: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data_at?: string
+          entry?: number
+          expires_at?: string
+          explanation?: string
+          id?: string
+          reason?: string
+          risk_reward?: number
+          side?: string
+          signal_key?: string
+          status?: string
+          stop_loss?: number
+          strategy?: string
+          symbol?: string
+          take_profit?: number
+          timeframe?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      trade_signals: {
+        Row: {
+          bot_id: string
+          close_price: number | null
+          closed_at: string | null
+          comment: string | null
+          created_at: string
+          error: string | null
+          fill_price: number | null
+          filled_at: string | null
+          id: string
+          profit: number | null
+          sent_at: string | null
+          side: string
+          signal_key: string | null
+          status: string
+          stop_loss: number | null
+          strategy: string | null
+          symbol: string
+          take_profit: number | null
+          ticket: string | null
+          user_id: string
+          volume: number
+        }
+        Insert: {
+          bot_id: string
+          close_price?: number | null
+          closed_at?: string | null
+          comment?: string | null
+          created_at?: string
+          error?: string | null
+          fill_price?: number | null
+          filled_at?: string | null
+          id?: string
+          profit?: number | null
+          sent_at?: string | null
+          side: string
+          signal_key?: string | null
+          status?: string
+          stop_loss?: number | null
+          strategy?: string | null
+          symbol: string
+          take_profit?: number | null
+          ticket?: string | null
+          user_id: string
+          volume: number
+        }
+        Update: {
+          bot_id?: string
+          close_price?: number | null
+          closed_at?: string | null
+          comment?: string | null
+          created_at?: string
+          error?: string | null
+          fill_price?: number | null
+          filled_at?: string | null
+          id?: string
+          profit?: number | null
+          sent_at?: string | null
+          side?: string
+          signal_key?: string | null
+          status?: string
+          stop_loss?: number | null
+          strategy?: string | null
+          symbol?: string
+          take_profit?: number | null
+          ticket?: string | null
+          user_id?: string
+          volume?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trade_signals_bot_id_fkey"
+            columns: ["bot_id"]
+            isOneToOne: false
+            referencedRelation: "bots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trading_accounts: {
+        Row: {
+          account_login: string
+          broker_server: string
+          connection_status: string
+          created_at: string
+          id: string
+          label: string | null
+          platform: string
+          user_id: string
+        }
+        Insert: {
+          account_login: string
+          broker_server: string
+          connection_status?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          platform?: string
+          user_id: string
+        }
+        Update: {
+          account_login?: string
+          broker_server?: string
+          connection_status?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          platform?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      watchlist: {
+        Row: {
+          created_at: string
+          id: string
+          instrument: string
+          note: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          instrument: string
+          note?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          instrument?: string
+          note?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      admin_stats: { Args: never; Returns: Json }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_mentor_of: {
+        Args: { _client: string; _mentor: string }
+        Returns: boolean
+      }
+      issue_mentor_bot_license: {
+        Args: {
+          p_bot_id: string
+          p_client_email: string
+          p_client_name: string
+          p_license_key: string
+        }
+        Returns: undefined
+      }
+      redeem_mentor_bot_license: {
+        Args: { p_license_key: string }
+        Returns: {
+          bot_id: string
+          bot_name: string
+          mentor_name: string
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "mentor" | "client"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +789,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "mentor", "client"],
+    },
   },
 } as const
