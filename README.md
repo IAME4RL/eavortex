@@ -1104,7 +1104,7 @@ The final result should feel like a premium, futuristic trading platform with a 
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://eavortexza.lovable.app
+**Live app**: https://eavortex-za.lovable.app
 
 ## Build with Lovable
 

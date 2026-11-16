@@ -27,7 +27,7 @@
 
 ## Get the app
 - [x] ACTIVATE BOT links to /get-app with iOS Add-to-Home-Screen steps and Android APK download; home-screen icons (192/512/maskable/180) in manifest + head.
-- [x] APK v1.0.1 rebuilt against the published URL (https://eavortexza.lovable.app) — opens the live site directly, no Lovable preview redirect. Project recreated at /root/eavortex-android.
+- [x] APK v1.0.1 rebuilt against the published URL (https://eavortex-za.lovable.app) — opens the live site directly, no Lovable preview redirect. Project recreated at /root/eavortex-android.
 - [ ] Sign a release build with a proper release keystore before public distribution (current build is debug-signed).
 
 ## MT5 Bridge download
