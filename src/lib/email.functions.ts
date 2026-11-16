@@ -1,12 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 
 // Public link to the EA VORTEX robot avatar (hashed build asset: if the image ever changes, this filename changes too).
-const EMAIL_AVATAR_URL = "https://eavortexza.lovable.app/assets/assistant-avatar-BptebAvQ.jpg";
+const EMAIL_AVATAR_URL = "https://eavortex-za.lovable.app/assets/assistant-avatar-BptebAvQ.jpg";
 
 export const sendLicenseEmail = createServerFn({ method: "POST" })
   .validator((d: { clientEmail: string; clientName: string; botName: string; licenseKey: string; mentorName: string}) => d)
   .handler(async ({ data }) => {
-    const apiKey = process.env["RESEND_API_KEY"];
+    const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       console.warn("RESEND_API_KEY is not set; skipping email send.");
       return { sent: false, reason: "missing_api_key" };
@@ -41,7 +41,7 @@ export const sendLicenseEmail = createServerFn({ method: "POST" })
         </p>
 
         <div style="text-align: center; margin-top: 30px;">
-          <a href="https://eavortexza.lovable.app/dashboard" style="background: #e2282b; color: #ffffff; padding: 12px 28px; text-decoration: none; font-weight: bold; font-size: 14px; border-radius: 6px; display: inline-block;">
+          <a href="https://eavortex-za.lovable.app/dashboard" style="background: #e2282b; color: #ffffff; padding: 12px 28px; text-decoration: none; font-weight: bold; font-size: 14px; border-radius: 6px; display: inline-block;">
             Open Client Dashboard
           </a>
         </div>
