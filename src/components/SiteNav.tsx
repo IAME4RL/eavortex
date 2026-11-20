@@ -11,6 +11,7 @@ const LINKS = [
   { to: "/features", label: "Features" },
   { to: "/how-it-works", label: "How It Works" },
   { to: "/faq", label: "FAQ" },
+  { to: "/affiliates", label: "Affiliates" },
 ] as const;
 
 const APP_LINKS = [
