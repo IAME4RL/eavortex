@@ -162,6 +162,7 @@ function BotPanel({ account, bot }: { account: Account; bot: BotRow }) {
       const { error } = await supabase.from("trade_signals").insert({
         user_id: user.id, bot_id: bot.id, symbol: symbol.trim(), side, volume: v,
         stop_loss: sl ? Number(sl) : null, take_profit: tp ? Number(tp) : null, comment: "EA VORTEX",
+        status: "queued",
       });
       if (error) throw error;
     },
