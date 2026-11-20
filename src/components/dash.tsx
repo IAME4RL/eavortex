@@ -42,6 +42,7 @@ const STATUS: Record<string, { label: string; cls: string }> = {
   terminal_never: { label: "MT5 not linked", cls: "border-border text-muted-foreground" },
   demo: { label: "Demo account", cls: "border-neutral/40 text-neutral" },
   live: { label: "Live account", cls: "border-primary/50 text-primary" },
+  sig_pending: { label: "Pending", cls: "border-neutral/40 text-neutral" },
   sig_queued: { label: "Queued", cls: "border-neutral/40 text-neutral" },
   sig_sent: { label: "Sent", cls: "border-neutral/40 text-neutral" },
   sig_filled: { label: "Filled", cls: "border-bull/40 text-bull" },
