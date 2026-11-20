@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   LayoutDashboard, ScanLine, History, Bot, BarChart3, LineChart, Bell, Settings, Users, ShieldCheck, LogOut, Menu, X, Zap,
-  Newspaper, Sparkles,
+  Newspaper, Sparkles, Handshake,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { PortalHeader, TabBar } from "@/components/portal";
@@ -29,6 +29,7 @@ const NAV = [
   { to: "/dashboard/analytics", label: "Trading Analytics", I: BarChart3 },
   { to: "/dashboard/market", label: "Market Analysis", I: LineChart },
   { to: "/dashboard/news", label: "News Signals", I: Newspaper },
+  { to: "/dashboard/affiliate", label: "Affiliate", I: Handshake },
   { to: "/dashboard/notifications", label: "Notifications", I: Bell },
   { to: "/dashboard/settings", label: "Settings", I: Settings },
 ] as const;

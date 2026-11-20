@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader, EmptyState, Stat } from "@/components/dash";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/lib/auth";
+import { AffiliateAdmin } from "@/components/AffiliateAdmin";
 
 export const Route = createFileRoute("/_authenticated/dashboard/admin")({ component: Page });
 
@@ -164,6 +165,8 @@ function Page() {
           )}
         </div>
       </div>
+
+      <AffiliateAdmin />
 
       {!s && !stats.isLoading && (
         <EmptyState icon={ShieldCheck} title="Stats unavailable">Platform statistics could not be loaded.</EmptyState>
