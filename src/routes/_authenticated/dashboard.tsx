@@ -29,10 +29,11 @@ const NAV = [
   { to: "/dashboard/analytics", label: "Trading Analytics", I: BarChart3 },
   { to: "/dashboard/market", label: "Market Analysis", I: LineChart },
   { to: "/dashboard/news", label: "News Signals", I: Newspaper },
-  { to: "/dashboard/affiliate", label: "Affiliate", I: Handshake },
   { to: "/dashboard/notifications", label: "Notifications", I: Bell },
   { to: "/dashboard/settings", label: "Settings", I: Settings },
 ] as const;
+
+const AFFILIATE_NAV = { to: "/dashboard/affiliate", label: "Affiliate", I: Handshake } as const;
 
 const linkCls = "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground data-[status=active]:bg-sidebar-accent data-[status=active]:text-primary data-[status=active]:shadow-[inset_2px_0_0_var(--primary)]";
 
@@ -54,13 +55,15 @@ function SidebarContent({
   onNavigate,
   showNav = true,
   variant = "classic",
-}: { onNavigate: () => void; showNav?: boolean; variant?: "classic" | "client" }) {
+  showAffiliate = false,
+}: { onNavigate: () => void; showNav?: boolean; variant?: "classic" | "client"; showAffiliate?: boolean }) {
   const { user, hasRole } = useAuth();
   const signOut = useSignOut();
   const profile = useQuery({
     queryKey: ["profile"], enabled: !!user,
     queryFn: async () => (await supabase.from("profiles").select("*").eq("id", user!.id).single()).data,
   });
+  const navItems = showAffiliate ? [...NAV, AFFILIATE_NAV] : NAV;
   const displayName = profile.data?.display_name?.trim();
 
   if (variant === "client") {
@@ -68,7 +71,7 @@ function SidebarContent({
       <div className="flex h-full flex-col">
         <div className="flex h-16 items-center border-b border-primary/20 px-5"><Logo /></div>
         <nav className="flex-1 space-y-2 overflow-y-auto p-4">
-          {showNav && NAV.map(({ to, label, I, ...rest }) => (
+          {showNav && navItems.map(({ to, label, I, ...rest }) => (
             <Link key={to} to={to} activeOptions={{ exact: "exact" in rest }} className={clientLinkCls} onClick={onNavigate}>
               <I className="h-4 w-4" />{label}
             </Link>
@@ -97,7 +100,7 @@ function SidebarContent({
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center border-b border-sidebar-border px-5"><Logo /></div>
       <nav className="flex-1 space-y-1 overflow-y-auto p-3">
-        {showNav && NAV.map(({ to, label, I, ...rest }) => (
+        {showNav && navItems.map(({ to, label, I, ...rest }) => (
           <Link key={to} to={to} activeOptions={{ exact: "exact" in rest }} className={linkCls} onClick={onNavigate}>
             <I className="h-4 w-4" />{label}
           </Link>
@@ -130,7 +133,7 @@ function DashLayout() {
 /** Existing layout, unchanged in look and behaviour: used by the admin page. */
 function LegacyShell() {
   const [open, setOpen] = useState(false);
-  const sidebar = <SidebarContent onNavigate={() => setOpen(false)} />;
+  const sidebar = <SidebarContent onNavigate={() => setOpen(false)} showAffiliate />;
   return (
     <div className="min-h-screen lg:pl-64">
       <VortexBackground />

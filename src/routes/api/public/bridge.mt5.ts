@@ -116,10 +116,11 @@ export const Route = createFileRoute("/api/public/bridge/mt5")({
           if (action === "poll" && !reason && !closeAt) {
             // Strategy engine: evaluate closed bars reported by this terminal; at most one idea, deduped by signal_key.
             if (bot.strategy !== "manual" && h.bars && h.symbol && h.tf) {
+              const symbol = h.symbol;
               const bars = parseBars(h.bars);
               if (!bars) patch.last_decision = "NO TRADE: malformed bar data from terminal";
               else {
-                const d = decide(bot.strategy as StrategySetting, bars, h.symbol, h.tf, h.digits ?? 5);
+                const d = decide(bot.strategy as StrategySetting, bars, symbol, h.tf, h.digits ?? 5);
                 if (!d.trade) patch.last_decision = d.reason;
                 else {
                   const t = d.trade;
@@ -132,7 +133,7 @@ export const Route = createFileRoute("/api/public/bridge/mt5")({
                     const newSignals = Array.from({ length: count }, (_, idx) => ({
                       user_id: bot.user_id,
                       bot_id: bot.id,
-                      symbol: h.symbol,
+                      symbol,
                       side: t.side,
                       volume,
                       stop_loss: null,
@@ -144,7 +145,7 @@ export const Route = createFileRoute("/api/public/bridge/mt5")({
                     const { error } = await supabaseAdmin.from("trade_signals").insert(newSignals);
                     patch.last_decision = error
                       ? (error.code === "23505" ? `Duplicate signal ignored (${t.key})` : "Could not queue strategy signal")
-                      : `${t.strategy} ${t.side.toUpperCase()} ${h.symbol} (${count} trades): ${t.reason}`;
+                      : `${t.strategy} ${t.side.toUpperCase()} ${symbol} (${count} trades): ${t.reason}`;
                   }
                 }
               }

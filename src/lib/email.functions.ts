@@ -6,7 +6,7 @@ const EMAIL_AVATAR_URL = "https://eavortex-za.lovable.app/assets/assistant-avata
 export const sendLicenseEmail = createServerFn({ method: "POST" })
   .validator((d: { clientEmail: string; clientName: string; botName: string; licenseKey: string; mentorName: string}) => d)
   .handler(async ({ data }) => {
-    const apiKey = process.env.RESEND_API_KEY;
+    const apiKey = process.env["RESEND_API_KEY"];
     if (!apiKey) {
       console.warn("RESEND_API_KEY is not set; skipping email send.");
       return { sent: false, reason: "missing_api_key" };

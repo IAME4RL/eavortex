@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Save, UserRound, GraduationCap } from "lucide-react";
+import { Save, UserRound, GraduationCap, Handshake, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { NeonCard, PortalTitle, PwLabel } from "@/components/portal";
@@ -94,6 +94,16 @@ function Page() {
               </button>
             )}
           </div>
+        </NeonCard>
+
+        <NeonCard className="p-5 sm:p-6">
+          <PwLabel red className="flex items-center gap-2"><Handshake className="h-4 w-4" />Affiliate program</PwLabel>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Manage your referral link, earnings and payouts.
+          </p>
+          <Link to="/dashboard/affiliate" className="pw-btn mt-5 w-full justify-between">
+            Open affiliate portal <ArrowUpRight className="h-4 w-4" />
+          </Link>
         </NeonCard>
       </div>
     </>
