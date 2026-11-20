@@ -108,7 +108,7 @@ export const Route = createFileRoute("/api/public/bridge/mt5")({
             closeAt = now;
             const msg = `Safety net: floating loss ${floatingLoss.toFixed(2)} reached ${Number(bot.risk_per_trade_pct)}% of your balance. Closing the bot's trades and stopping.`;
             Object.assign(patch, { status: "stopped", stop_requested_at: now, stop_ack_at: null, emergency_close_requested_at: now, emergency_close_ack_at: null, emergency_close_result: null, last_error: "DRAWDOWN_LIMIT", last_decision: msg });
-            await supabaseAdmin.from("trade_signals").update({ status: "cancelled" }).eq("bot_id", bot.id).eq("status", "queued");
+            await supabaseAdmin.from("trade_signals").update({ status: "cancelled" }).eq("bot_id", bot.id).in("status", ["queued", "pending"]);
             await supabaseAdmin.from("notifications").insert({ user_id: bot.user_id, title: "Bot stopped by safety net", body: msg });
           }
           if (identityOk && closeAt) lines.push(`CLOSEALL|${closeAt}`);
@@ -141,6 +141,7 @@ export const Route = createFileRoute("/api/public/bridge/mt5")({
                       strategy: t.strategy,
                       signal_key: `${t.key}_${idx + 1}`,
                       comment: `${t.reason.slice(0, 150)} (#${idx + 1})`,
+                      status: "queued",
                     }));
                     const { error } = await supabaseAdmin.from("trade_signals").insert(newSignals);
                     patch.last_decision = error
@@ -151,15 +152,15 @@ export const Route = createFileRoute("/api/public/bridge/mt5")({
               }
             }
             const { data: queued } = await supabaseAdmin.from("trade_signals").select("*")
-              .eq("bot_id", bot.id).eq("status", "queued").order("created_at").limit(deliverySlots(h.open, bot.max_open_trades));
+              .eq("bot_id", bot.id).in("status", ["queued", "pending"]).order("created_at").limit(deliverySlots(h.open, bot.max_open_trades));
             for (const s of queued ?? []) {
               if (!volumeAllowed(Number(s.volume), Number(bot.max_lot))) {
-  await supabaseAdmin.from("trade_signals").update({ status: "rejected", error: "Volume exceeds bot max lot" }).eq("id", s.id);
-  continue;
-}
+                await supabaseAdmin.from("trade_signals").update({ status: "rejected", error: "Volume exceeds bot max lot" }).eq("id", s.id);
+                continue;
+              }
 
               const { data: claimed } = await supabaseAdmin.from("trade_signals")
-                .update({ status: "sent", sent_at: now }).eq("id", s.id).eq("status", "queued").select("id");
+                .update({ status: "sent", sent_at: now }).eq("id", s.id).in("status", ["queued", "pending"]).select("id");
               if (claimed?.length) lines.push(formatSignalLine({ id: s.id, symbol: s.symbol, side: s.side as "buy" | "sell", volume: Number(s.volume), stop_loss: s.stop_loss, take_profit: s.take_profit }));
             }
           }
