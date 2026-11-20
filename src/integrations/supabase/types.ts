@@ -14,6 +14,115 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_payouts: {
+        Row: {
+          affiliate_id: string
+          amount_cents: number
+          created_at: string
+          id: string
+          reference: string
+        }
+        Insert: {
+          affiliate_id: string
+          amount_cents: number
+          created_at?: string
+          id?: string
+          reference?: string
+        }
+        Update: {
+          affiliate_id?: string
+          amount_cents?: number
+          created_at?: string
+          id?: string
+          reference?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_payouts_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliate_referrals: {
+        Row: {
+          affiliate_id: string
+          commission_cents: number
+          created_at: string
+          id: string
+          paid_at: string | null
+          referred_label: string
+          referred_user_id: string
+          status: string
+        }
+        Insert: {
+          affiliate_id: string
+          commission_cents?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          referred_label?: string
+          referred_user_id: string
+          status?: string
+        }
+        Update: {
+          affiliate_id?: string
+          commission_cents?: number
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          referred_label?: string
+          referred_user_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_referrals_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliates: {
+        Row: {
+          account_holder: string
+          account_number: string
+          bank_name: string
+          code: string
+          created_at: string
+          full_name: string
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          account_holder?: string
+          account_number?: string
+          bank_name?: string
+          code: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          account_holder?: string
+          account_number?: string
+          bank_name?: string
+          code?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           daily_scan_limit: number
@@ -631,7 +740,60 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_affiliate_overview: {
+        Args: never
+        Returns: {
+          account_holder: string
+          account_number: string
+          balance_cents: number
+          bank_name: string
+          code: string
+          created_at: string
+          earned_cents: number
+          email: string
+          full_name: string
+          id: string
+          paid_out_cents: number
+          referrals_paid: number
+          referrals_total: number
+          status: string
+        }[]
+      }
+      admin_affiliate_referrals: {
+        Args: never
+        Returns: {
+          affiliate_code: string
+          affiliate_name: string
+          commission_cents: number
+          created_at: string
+          id: string
+          paid_at: string
+          referred_email: string
+          status: string
+        }[]
+      }
+      admin_record_payout: {
+        Args: {
+          p_affiliate_id: string
+          p_amount_cents: number
+          p_reference: string
+        }
+        Returns: undefined
+      }
+      admin_set_affiliate_status: {
+        Args: { p_affiliate_id: string; p_status: string }
+        Returns: undefined
+      }
+      admin_set_referral_status: {
+        Args: { p_referral_id: string; p_status: string }
+        Returns: undefined
+      }
       admin_stats: { Args: never; Returns: Json }
+      affiliate_balance_cents: {
+        Args: { p_affiliate_id: string }
+        Returns: number
+      }
+      claim_referral: { Args: { p_code: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -652,6 +814,27 @@ export type Database = {
         }
         Returns: undefined
       }
+      join_affiliate: {
+        Args: { p_full_name: string }
+        Returns: {
+          account_holder: string
+          account_number: string
+          bank_name: string
+          code: string
+          created_at: string
+          full_name: string
+          id: string
+          status: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "affiliates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      my_affiliate_summary: { Args: never; Returns: Json }
       redeem_mentor_bot_license: {
         Args: { p_license_key: string }
         Returns: {
@@ -659,6 +842,15 @@ export type Database = {
           bot_name: string
           mentor_name: string
         }[]
+      }
+      update_affiliate_payout: {
+        Args: {
+          p_account_holder: string
+          p_account_number: string
+          p_bank_name: string
+          p_full_name: string
+        }
+        Returns: undefined
       }
     }
     Enums: {
