@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { captureReferral, claimStoredReferral } from "@/lib/affiliate";
 
 type Role = "admin" | "mentor" | "client";
 interface AuthState {
@@ -24,6 +25,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
     setRoles((data ?? []).map((r) => r.role as Role));
   }
+
+  useEffect(() => { captureReferral(); }, []);
+
+  const signedInId = session?.user.id;
+  useEffect(() => { if (signedInId) void claimStoredReferral(); }, [signedInId]);
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
