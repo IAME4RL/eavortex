@@ -14,7 +14,7 @@
 - [x] Inspect current authentication, routes, database, strategy registry, client controls, and MT5 Bridge
 - [ ] Add separately guarded mentor login/dashboard and mentor navigation
 - [ ] Add mentor-owned robot configurations, client assignments, invitation codes, and secure license lifecycle
-- [ ] Add client license activation, authorized robot selection, and execution entitlement checks to existing START and bridge polling
+- [ ] Add client license activation and authorized robot selection; require a valid redeemed license for bot START and MT5 bridge order delivery, with a clear locked state
 - [ ] Apply reference-inspired portal styling while preserving scanner and existing platform
 - [ ] Verify ownership isolation, activation limits/expiry/revocation, client START/STOP, existing tests, and Android/desktop layouts
 - [ ] Exact visual comparison against original trading video and EA NEXUS screenshot — original media must be reuploaded
